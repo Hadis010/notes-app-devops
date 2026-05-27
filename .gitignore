@@ -1,0 +1,31 @@
+# Node
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.tfvars
+
+# Ansible
+*.retry
+.vault_pass
+ansible/.vault_pass
+
+# Python / Molecule
+__pycache__/
+.pytest_cache/
+.molecule/
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
