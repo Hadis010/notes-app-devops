@@ -34,6 +34,12 @@ RUN addgroup --system --gid 1001 nodejs \
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
+COPY prisma ./prisma/
+RUN npm install prisma@^6.19.0 --no-save && npm cache clean --force
+
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
 # Generated Prisma client (query engine) from the build stage
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/dist ./dist
@@ -42,4 +48,4 @@ USER appuser
 
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
