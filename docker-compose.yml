@@ -23,5 +23,21 @@ services:
       retries: 5
       start_period: 30s
 
+  backend:
+    build: ./app/backend
+    container_name: notes-app-backend
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      DATABASE_URL: mysql://notes_user:notes_password@mysql:3306/notes_app
+      PORT: 3000
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
 volumes:
   mysql_data:
