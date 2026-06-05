@@ -8,7 +8,9 @@ const app = Fastify({
   logger: true,
 });
 
-await app.register(cors);
+await app.register(cors, {
+  methods: ["GET", "HEAD", "POST", "PUT", "DELETE"],
+});
 await app.register(notesRoutes);
 
 app.setErrorHandler((error, request, reply) => {
