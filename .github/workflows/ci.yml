@@ -13,6 +13,25 @@ jobs:
     name: Backend
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: mysql://notes_user:notes_password@127.0.0.1:3306/notes_app
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: notes_app
+          MYSQL_USER: notes_user
+          MYSQL_PASSWORD: notes_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     defaults:
       run:
         working-directory: app/backend
@@ -33,6 +52,12 @@ jobs:
 
       - name: Generate Prisma client
         run: npm run prisma:generate
+
+      - name: Apply database migrations
+        run: npx prisma migrate deploy
+
+      - name: Verify database infrastructure
+        run: npm run verify:db
 
       - name: Build
         run: npm run build
