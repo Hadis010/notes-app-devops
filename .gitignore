@@ -10,8 +10,9 @@ build/
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfplan
 terraform.tfvars
-*.tfvars
+*.auto.tfvars
 
 # Ansible
 *.retry
