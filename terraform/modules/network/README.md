@@ -8,8 +8,9 @@ Gestion du réseau AWS pour Tiny Notes App.
 - Création des sous-réseaux publics et privés
 - Configuration de l'Internet Gateway
 - Configuration des tables de routage
-- Définition des groupes de sécurité
-- Contrôle des flux réseau entre load balancer, application et base de données
+- Base réseau uniquement pour les autres modules Terraform
+- Pas de NAT Gateway pour limiter les coûts
+- Pas de security groups créés à ce stade
 
 ## Usage
 
