@@ -1,23 +1,23 @@
 ---
 - name: Create the deployment directory
   ansible.builtin.file:
-    path: "{{ app_deploy_dir }}"
+    path: "{{ application_deploy_dir }}"
     state: directory
     mode: "0755"
   become: true
 
 - name: Copy the backend source
   ansible.builtin.copy:
-    src: "{{ app_src_backend }}"
-    dest: "{{ app_deploy_dir }}/"
+    src: "{{ application_src_backend }}"
+    dest: "{{ application_deploy_dir }}/"
     mode: "0644"
   become: true
   notify: Restart application
 
 - name: Copy the frontend source
   ansible.builtin.copy:
-    src: "{{ app_src_frontend }}"
-    dest: "{{ app_deploy_dir }}/"
+    src: "{{ application_src_frontend }}"
+    dest: "{{ application_deploy_dir }}/"
     mode: "0644"
   become: true
   notify: Restart application
@@ -25,7 +25,7 @@
 - name: Render the deployment docker-compose file
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: "{{ app_deploy_dir }}/docker-compose.yml"
+    dest: "{{ application_deploy_dir }}/docker-compose.yml"
     mode: "0644"
   become: true
   notify: Restart application
@@ -33,7 +33,7 @@
 - name: Render the backend environment file
   ansible.builtin.template:
     src: backend.env.j2
-    dest: "{{ app_deploy_dir }}/backend/.env"
+    dest: "{{ application_deploy_dir }}/backend/.env"
     mode: "0640"
   become: true
   no_log: true
@@ -41,6 +41,6 @@
 
 - name: Start the application stack
   community.docker.docker_compose_v2:
-    project_src: "{{ app_deploy_dir }}"
+    project_src: "{{ application_deploy_dir }}"
     state: present
   become: true

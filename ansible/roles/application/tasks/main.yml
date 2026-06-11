@@ -1,7 +1,7 @@
 ---
 - name: Configure NAT instance
   ansible.builtin.import_tasks: nat.yml
-  when: nat_instance | default(false) | bool
+  when: application_nat_instance | default(false) | bool
 
 - name: Install Docker
   ansible.builtin.import_tasks: docker.yml

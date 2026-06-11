@@ -20,7 +20,7 @@
   ansible.builtin.iptables:
     table: nat
     chain: POSTROUTING
-    out_interface: "{{ nat_out_interface }}"
+    out_interface: "{{ application_nat_out_interface }}"
     jump: MASQUERADE
   become: true
   notify: Save iptables rules
