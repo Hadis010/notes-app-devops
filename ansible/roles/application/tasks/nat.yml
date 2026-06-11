@@ -1,0 +1,26 @@
+---
+- name: Enable persistent IPv4 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: true
+  become: true
+
+- name: Install iptables-persistent
+  ansible.builtin.apt:
+    name: iptables-persistent
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Masquerade outbound traffic from the private subnets
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ nat_out_interface }}"
+    jump: MASQUERADE
+  become: true
+  notify: Save iptables rules

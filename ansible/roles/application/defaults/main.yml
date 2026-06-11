@@ -1,1 +1,5 @@
 ---
+# NAT instance
+nat_instance: false
+
+nat_out_interface: "{{ ansible_default_ipv4.interface }}"

@@ -1,1 +1,5 @@
 ---
+- name: Save iptables rules
+  ansible.builtin.command: netfilter-persistent save
+  become: true
+  changed_when: false
