@@ -25,12 +25,13 @@ provider "aws" {
 module "network" {
   source = "../../modules/network"
 
-  project_name         = var.project_name
-  environment          = var.environment
-  vpc_cidr             = var.vpc_cidr
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
-  availability_zones   = var.availability_zones
+  project_name             = var.project_name
+  environment              = var.environment
+  vpc_cidr                 = var.vpc_cidr
+  public_subnet_cidrs      = var.public_subnet_cidrs
+  private_subnet_cidrs     = var.private_subnet_cidrs
+  availability_zones       = var.availability_zones
+  nat_network_interface_id = module.app.nat_network_interface_id
 }
 
 # Load balancer  
@@ -52,6 +53,7 @@ module "app" {
   environment          = var.environment
   vpc_id               = module.network.vpc_id
   public_subnet_ids    = module.network.public_subnet_ids
+  private_subnet_cidrs = var.private_subnet_cidrs
   ami_id               = var.ami_id
   instance_type        = var.app_instance_type
   key_name             = var.key_name
@@ -59,6 +61,7 @@ module "app" {
   lb_security_group_id = module.loadbalancer.security_group_id
   target_group_arn     = module.loadbalancer.target_group_arn
   ssh_allowed_cidr     = var.ssh_allowed_cidr
+  enable_nat_instance  = true
 }
 
 # Base de données 
@@ -73,4 +76,13 @@ module "database" {
   instance_type         = var.db_instance_type
   key_name              = var.key_name
   app_security_group_id = module.app.security_group_id
+}
+
+# Backup : bucket S3 chiffré et versionné pour les sauvegardes de la base.
+module "backup" {
+  source = "../../modules/backup"
+
+  project_name   = var.project_name
+  environment    = var.environment
+  retention_days = var.backup_retention_days
 }

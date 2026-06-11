@@ -74,3 +74,9 @@ variable "app_port" {
   type        = number
   default     = 3000
 }
+
+variable "backup_retention_days" {
+  description = "Number of days a backup is kept in the S3 bucket before expiration"
+  type        = number
+  default     = 30
+}

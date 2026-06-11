@@ -17,3 +17,13 @@ output "db_private_ip" {
   description = "Private IP address of the database instance"
   value       = module.database.private_ip
 }
+
+output "backup_bucket_name" {
+  description = "Name of the S3 bucket storing the backups"
+  value       = module.backup.bucket_name
+}
+
+output "backup_bucket_arn" {
+  description = "ARN of the S3 bucket storing the backups"
+  value       = module.backup.bucket_arn
+}
