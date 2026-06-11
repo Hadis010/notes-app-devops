@@ -42,3 +42,9 @@ variable "availability_zones" {
     error_message = "availability_zones must contain exactly 2 availability zones."
   }
 }
+
+variable "nat_network_interface_id" {
+  description = "Optional primary network interface ID of a NAT instance used as the default route for the private subnets. When null, no private route table is created (the private subnets stay isolated)."
+  type        = string
+  default     = null
+}
