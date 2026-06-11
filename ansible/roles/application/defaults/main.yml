@@ -3,3 +3,18 @@
 nat_instance: false
 
 nat_out_interface: "{{ ansible_default_ipv4.interface }}"
+
+# Deployment
+app_project_name: tiny-notes-app
+app_deploy_dir: /opt/tiny-notes-app
+
+app_src_backend: "{{ playbook_dir }}/../../app/backend"
+app_src_frontend: "{{ playbook_dir }}/../../app/frontend"
+
+docker_apt_arch: amd64
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin
+

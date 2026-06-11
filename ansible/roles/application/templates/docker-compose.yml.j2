@@ -1,0 +1,9 @@
+services:
+  backend:
+    build: ./backend
+    container_name: "{{ app_project_name }}-backend"
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "{{ app_port }}:{{ app_port }}"

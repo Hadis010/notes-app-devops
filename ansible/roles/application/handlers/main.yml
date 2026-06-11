@@ -3,3 +3,9 @@
   ansible.builtin.command: netfilter-persistent save
   become: true
   changed_when: false
+
+- name: Restart application
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_deploy_dir }}"
+    state: restarted
+  become: true
