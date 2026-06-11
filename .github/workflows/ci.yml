@@ -97,3 +97,30 @@ jobs:
 
       - name: Build backend image
         run: docker build -t notes-backend ./app/backend
+
+  ansible:
+    name: Ansible
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Ansible and Molecule
+        run: pip install ansible ansible-lint molecule "molecule-plugins[docker]" docker
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+
+      - name: Run ansible-lint
+        run: ansible-lint
+        working-directory: ansible
+
+      - name: Run Molecule
+        run: molecule test
+        working-directory: ansible/roles/database
