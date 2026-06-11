@@ -1,0 +1,8 @@
+# Variables d'environnement - développement
+
+aws_region   = "eu-west-3"
+project_name = "tiny-notes-app"
+environment  = "dev"
+
+# Adresse IP autorisée pour l'administration SSH
+ssh_allowed_cidr = "X.X.X.X/32"
