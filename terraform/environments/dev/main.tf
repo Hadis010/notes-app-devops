@@ -76,6 +76,7 @@ module "database" {
   instance_type         = var.db_instance_type
   key_name              = var.key_name
   app_security_group_id = module.app.security_group_id
+  iam_instance_profile  = module.backup.instance_profile_name
 }
 
 # Backup : bucket S3 chiffré et versionné pour les sauvegardes de la base.

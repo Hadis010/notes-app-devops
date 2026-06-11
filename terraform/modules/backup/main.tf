@@ -59,3 +59,52 @@ resource "aws_s3_bucket_lifecycle_configuration" "backups" {
 
   depends_on = [aws_s3_bucket_versioning.backups]
 }
+
+data "aws_iam_policy_document" "backup_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "backup" {
+  name               = "${local.name_prefix}-db-backup-role"
+  assume_role_policy = data.aws_iam_policy_document.backup_assume.json
+
+  tags = {
+    Name = "${local.name_prefix}-db-backup-role"
+  }
+}
+
+data "aws_iam_policy_document" "backup" {
+  statement {
+    sid       = "ListBackupBucket"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.backups.arn]
+  }
+
+  statement {
+    sid       = "ReadWriteBackups"
+    actions   = ["s3:PutObject", "s3:GetObject"]
+    resources = ["${aws_s3_bucket.backups.arn}/*"]
+  }
+}
+
+resource "aws_iam_policy" "backup" {
+  name   = "${local.name_prefix}-db-backup-policy"
+  policy = data.aws_iam_policy_document.backup.json
+}
+
+resource "aws_iam_role_policy_attachment" "backup" {
+  role       = aws_iam_role.backup.name
+  policy_arn = aws_iam_policy.backup.arn
+}
+
+resource "aws_iam_instance_profile" "backup" {
+  name = "${local.name_prefix}-db-backup-profile"
+  role = aws_iam_role.backup.name
+}
