@@ -1,1 +1,10 @@
 ---
+common_packages:
+  - curl
+  - git
+  - unzip
+  - ca-certificates
+  - gnupg
+  - python3-pip
+
+common_timezone: null
