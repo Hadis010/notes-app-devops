@@ -1,0 +1,4 @@
+---
+# Load balancer group.
+
+lb_health_check_path: /health

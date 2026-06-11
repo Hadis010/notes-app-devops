@@ -1,0 +1,13 @@
+---
+# Application instances configuration.
+
+app_port: 3000
+app_node_env: production
+
+# Database connection used by the backend.
+app_db_host: DB_PRIVATE_IP_PLACEHOLDER
+app_db_port: 3306
+app_db_name: notes_app
+app_db_user: notes_user
+# Store the real value with ansible-vault like the second tp
+app_db_password: "{{ vault_app_db_password | default('CHANGEME') }}"

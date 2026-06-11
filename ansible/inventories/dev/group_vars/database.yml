@@ -1,0 +1,11 @@
+---
+# Database instance configuration.
+
+mysql_port: 3306
+mysql_database: notes_app
+mysql_user: notes_user
+# Store the real values with ansible-vault.
+mysql_password: "{{ vault_mysql_password | default('CHANGEME') }}"
+mysql_root_password: "{{ vault_mysql_root_password | default('CHANGEME') }}"
+
+ansible_ssh_common_args: "-o ProxyJump=ubuntu@BASTION_PUBLIC_IP_PLACEHOLDER"

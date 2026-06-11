@@ -1,0 +1,30 @@
+---
+- name: Base configuration on all hosts
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Configure application instances
+  hosts: app
+  become: true
+  roles:
+    - application
+
+- name: Configure database instance
+  hosts: database
+  become: true
+  roles:
+    - database
+
+- name: Configure load balancer
+  hosts: loadbalancer
+  become: true
+  roles:
+    - loadbalancer
+
+- name: Configure backup
+  hosts: backup
+  become: true
+  roles:
+    - backup

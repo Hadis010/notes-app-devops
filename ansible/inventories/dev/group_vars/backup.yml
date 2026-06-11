@@ -1,0 +1,9 @@
+---
+# Backup group.
+
+backup_s3_bucket: BACKUP_BUCKET_NAME_PLACEHOLDER
+backup_retention_days: 30
+
+# Cron schedule for the backup job.
+backup_schedule_hour: 2
+backup_schedule_minute: 0
