@@ -76,3 +76,15 @@ variable "root_volume_size" {
   type        = number
   default     = 10
 }
+
+variable "enable_nat_instance" {
+  description = "When true, the first application instance also acts as a NAT instance for the private subnets (source/destination check disabled)"
+  type        = bool
+  default     = false
+}
+
+variable "private_subnet_cidrs" {
+  description = "CIDR blocks of the private subnets allowed to route their outbound traffic through the NAT instance. Only used when enable_nat_instance is true."
+  type        = list(string)
+  default     = []
+}

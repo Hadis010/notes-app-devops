@@ -26,6 +26,18 @@ resource "aws_security_group" "app" {
     cidr_blocks = [var.ssh_allowed_cidr]
   }
 
+  dynamic "ingress" {
+    for_each = var.enable_nat_instance && length(var.private_subnet_cidrs) > 0 ? [1] : []
+
+    content {
+      description = "NAT forwarding from the private subnets"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = var.private_subnet_cidrs
+    }
+  }
+
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -49,6 +61,10 @@ resource "aws_instance" "app" {
   key_name                    = var.key_name
   vpc_security_group_ids      = [aws_security_group.app.id]
   associate_public_ip_address = true
+
+  # The first instance doubles as a NAT instance for the private subnets when
+  # enabled, so it must not drop traffic it forwards on behalf of the database.
+  source_dest_check = var.enable_nat_instance && count.index == 0 ? false : true
 
   root_block_device {
     volume_size = var.root_volume_size
