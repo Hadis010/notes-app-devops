@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BACKUP_DIR="{{ backup_dir }}"
+DATABASE="{{ mysql_database }}"
+S3_BUCKET="{{ backup_s3_bucket }}"
+RETENTION_DAYS="{{ backup_retention_days }}"
+TIMESTAMP="$(date +%Y%m%d%H%M%S)"
+DUMP_FILE="${BACKUP_DIR}/${DATABASE}-${TIMESTAMP}.sql.gz"
+
+
+export MYSQL_PWD='{{ mysql_password }}'
+
+mysqldump --single-transaction \
+  --user="{{ mysql_user }}" \
+  --host="{{ backup_mysql_host }}" \
+  "${DATABASE}" | gzip > "${DUMP_FILE}"
+
+aws s3 cp "${DUMP_FILE}" "s3://${S3_BUCKET}/database/"
+
+find "${BACKUP_DIR}" -name "${DATABASE}-*.sql.gz" -type f \
+  -mtime +"${RETENTION_DAYS}" -delete

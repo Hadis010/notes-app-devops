@@ -1,1 +1,12 @@
 ---
+backup_packages:
+  - mysql-client
+  - gzip
+  - awscli
+
+backup_dir: /var/backups/tiny-notes-app
+backup_script_path: /usr/local/bin/backup-tiny-notes-db.sh
+
+backup_mysql_host: localhost
+
+backup_retention_days: 30
