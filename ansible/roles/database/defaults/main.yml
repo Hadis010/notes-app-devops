@@ -1,1 +1,12 @@
 ---
+mysql_packages:
+  - mysql-server
+  - python3-pymysql
+
+mysql_service: mysql
+mysql_socket: /run/mysqld/mysqld.sock
+
+mysql_user_host: "%"
+
+mysql_bind_address: "0.0.0.0"
+mysql_config_file: /etc/mysql/mysql.conf.d/mysqld.cnf
