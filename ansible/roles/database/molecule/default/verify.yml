@@ -1,0 +1,51 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Assert the MySQL service is running
+      ansible.builtin.assert:
+        that:
+          - "'mysql.service' in ansible_facts.services"
+          - "ansible_facts.services['mysql.service'].state == 'running'"
+        fail_msg: "MySQL service is not running"
+
+    - name: Query the application database
+      community.mysql.mysql_query:
+        login_unix_socket: "{{ mysql_socket }}"
+        query: "SHOW DATABASES LIKE '{{ mysql_database }}'"
+      register: db_result
+
+    - name: Assert the application database exists
+      ansible.builtin.assert:
+        that:
+          - db_result.rowcount[0] == 1
+        fail_msg: "Database {{ mysql_database }} does not exist"
+
+    - name: Query the application user
+      community.mysql.mysql_query:
+        login_unix_socket: "{{ mysql_socket }}"
+        query: "SELECT User FROM mysql.user WHERE User = '{{ mysql_user }}'"
+      register: user_result
+
+    - name: Assert the application user exists
+      ansible.builtin.assert:
+        that:
+          - user_result.rowcount[0] >= 1
+        fail_msg: "User {{ mysql_user }} does not exist"
+
+    - name: Query the Note table
+      community.mysql.mysql_query:
+        login_db: "{{ mysql_database }}"
+        login_unix_socket: "{{ mysql_socket }}"
+        query: "SHOW TABLES LIKE 'Note'"
+      register: table_result
+
+    - name: Assert the Note table exists
+      ansible.builtin.assert:
+        that:
+          - table_result.rowcount[0] == 1
+        fail_msg: "Table Note does not exist"
