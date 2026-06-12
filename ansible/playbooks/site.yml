@@ -3,28 +3,33 @@
   hosts: all
   become: true
   roles:
-    - common
+    - role: common
+      tags: [common]
 
 - name: Configure application instances
   hosts: app
   become: true
   roles:
-    - application
+    - role: application
+      tags: [application]
 
 - name: Configure database instance
   hosts: database
   become: true
   roles:
-    - database
+    - role: database
+      tags: [database]
 
 - name: Configure load balancer
   hosts: loadbalancer
   become: true
   roles:
-    - loadbalancer
+    - role: loadbalancer
+      tags: [loadbalancer]
 
 - name: Configure backup
   hosts: backup
   become: true
   roles:
-    - backup
+    - role: backup
+      tags: [backup]
