@@ -1,0 +1,15 @@
+---
+# Template for the encrypted secrets file.
+#
+# Usage:
+#   1. cp vault.yml.example vault.yml
+#   2. set real values below
+#   3. ansible-vault encrypt vault.yml
+#   4. commit ONLY the encrypted vault.yml 
+#
+# Run playbooks with: ansible-playbook ... --ask-vault-pass
+#
+# These keys are consumed by group_vars/app.yml and group_vars/database.yml.
+vault_mysql_password: "change_me"
+vault_mysql_root_password: "change_me"
+vault_app_db_password: "change_me"
