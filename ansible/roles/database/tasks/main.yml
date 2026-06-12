@@ -1,7 +1,7 @@
 ---
 - name: Install MySQL server and Python client
   ansible.builtin.apt:
-    name: "{{ mysql_packages }}"
+    name: "{{ database_mysql_packages }}"
     state: present
     update_cache: true
     cache_valid_time: 3600
@@ -9,17 +9,17 @@
 
 - name: Ensure MySQL service is started and enabled
   ansible.builtin.service:
-    name: "{{ mysql_service }}"
+    name: "{{ database_mysql_service }}"
     state: started
     enabled: true
   become: true
 
 - name: Configure MySQL bind address
   community.general.ini_file:
-    path: "{{ mysql_config_file }}"
+    path: "{{ database_mysql_config_file }}"
     section: mysqld
     option: bind-address
-    value: "{{ mysql_bind_address }}"
+    value: "{{ database_mysql_bind_address }}"
     mode: "0644"
   become: true
   notify: Restart MySQL
@@ -28,17 +28,17 @@
   community.mysql.mysql_db:
     name: "{{ mysql_database }}"
     state: present
-    login_unix_socket: "{{ mysql_socket }}"
+    login_unix_socket: "{{ database_mysql_socket }}"
   become: true
 
 - name: Create the application database user with privileges
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
-    host: "{{ mysql_user_host }}"
+    host: "{{ database_mysql_user_host }}"
     priv: "{{ mysql_database }}.*:ALL"
     state: present
     update_password: on_create
-    login_unix_socket: "{{ mysql_socket }}"
+    login_unix_socket: "{{ database_mysql_socket }}"
   become: true
   no_log: true
