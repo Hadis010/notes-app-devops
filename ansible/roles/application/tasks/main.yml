@@ -8,3 +8,4 @@
 
 - name: Deploy the application
   ansible.builtin.import_tasks: deploy.yml
+  when: application_deploy_enabled | bool

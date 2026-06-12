@@ -4,6 +4,7 @@ application_nat_instance: false
 application_nat_out_interface: "{{ ansible_default_ipv4.interface }}"
 
 # Deployment
+application_deploy_enabled: true
 application_project_name: tiny-notes-app
 application_deploy_dir: /opt/tiny-notes-app
 application_src_backend: "{{ playbook_dir }}/../../app/backend"
