@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/notes";
+const API_URL = "/notes";
 
 export type Note = {
   id: number;
