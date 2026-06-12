@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Stat the backup script
+      ansible.builtin.stat:
+        path: /usr/local/bin/backup-tiny-notes-db.sh
+      register: backup_script
+
+    - name: Assert the backup script is installed and executable
+      ansible.builtin.assert:
+        that:
+          - backup_script.stat.exists
+          - backup_script.stat.mode == '0700'
+        fail_msg: "Backup script missing or wrong permissions"
+
+    - name: Read the root crontab
+      ansible.builtin.command: crontab -l -u root
+      register: root_crontab
+      changed_when: false
+
+    - name: Assert the backup cron job is scheduled
+      ansible.builtin.assert:
+        that:
+          - "'backup-tiny-notes-db.sh' in root_crontab.stdout"
+        fail_msg: "Backup cron job not scheduled"

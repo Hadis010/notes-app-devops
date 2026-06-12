@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: application-instance
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..
+  inventory:
+    group_vars:
+      all:
+        # Test Docker setup only; the deploy step needs the app sources and a
+        # running Docker daemon (docker-in-docker), out of scope for this test.
+        application_deploy_enabled: false
+verifier:
+  name: ansible

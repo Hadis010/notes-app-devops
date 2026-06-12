@@ -1,0 +1,25 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Assert the Docker service is running
+      ansible.builtin.assert:
+        that:
+          - "'docker.service' in ansible_facts.services"
+          - "ansible_facts.services['docker.service'].state == 'running'"
+        fail_msg: "Docker service is not running"
+
+    - name: Check the Docker Compose plugin
+      ansible.builtin.command: docker compose version
+      register: docker_compose_version
+      changed_when: false
+
+    - name: Assert the Docker Compose plugin is available
+      ansible.builtin.assert:
+        that:
+          - docker_compose_version.rc == 0
+        fail_msg: "Docker Compose plugin not available"
