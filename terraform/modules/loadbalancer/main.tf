@@ -9,7 +9,7 @@ resource "aws_security_group" "lb" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "HTTP from clients (also used for the Let's Encrypt challenge)"
+    description = "HTTP from clients (also used for the ACME challenge)"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
