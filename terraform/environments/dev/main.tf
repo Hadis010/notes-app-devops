@@ -38,11 +38,14 @@ module "network" {
 module "loadbalancer" {
   source = "../../modules/loadbalancer"
 
-  project_name      = var.project_name
-  environment       = var.environment
-  vpc_id            = module.network.vpc_id
-  public_subnet_ids = module.network.public_subnet_ids
-  app_port          = var.app_port
+  project_name     = var.project_name
+  environment      = var.environment
+  vpc_id           = module.network.vpc_id
+  subnet_id        = module.network.public_subnet_ids[0]
+  ami_id           = var.ami_id
+  instance_type    = var.lb_instance_type
+  key_name         = var.key_name
+  ssh_allowed_cidr = var.ssh_allowed_cidr
 }
 
 # Application 
@@ -57,9 +60,7 @@ module "app" {
   ami_id               = var.ami_id
   instance_type        = var.app_instance_type
   key_name             = var.key_name
-  app_port             = var.app_port
   lb_security_group_id = module.loadbalancer.security_group_id
-  target_group_arn     = module.loadbalancer.target_group_arn
   ssh_allowed_cidr     = var.ssh_allowed_cidr
   enable_nat_instance  = true
 }

@@ -15,7 +15,7 @@ ami_id            = "ami-xxxxxxxxxxxxxxxxx"
 key_name          = "your-key-name"
 app_instance_type = "t3.micro"
 db_instance_type  = "t3.micro"
-app_port          = 3000
+lb_instance_type  = "t3.micro"
 
 # Backup
 backup_retention_days = 30

@@ -11,9 +11,9 @@ resource "aws_security_group" "app" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description     = "Application HTTP from the load balancer"
-    from_port       = var.app_port
-    to_port         = var.app_port
+    description     = "Front-end HTTP from the load balancer"
+    from_port       = var.front_port
+    to_port         = var.front_port
     protocol        = "tcp"
     security_groups = [var.lb_security_group_id]
   }
@@ -76,13 +76,4 @@ resource "aws_instance" "app" {
     Name = "${local.name_prefix}-app-${count.index + 1}"
     Role = "app"
   }
-}
-
-# Register every instance to the load balancer target group.
-resource "aws_lb_target_group_attachment" "app" {
-  count = var.instance_count
-
-  target_group_arn = var.target_group_arn
-  target_id        = aws_instance.app[count.index].id
-  port             = var.app_port
 }

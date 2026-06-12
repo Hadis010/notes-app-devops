@@ -69,10 +69,10 @@ variable "db_instance_type" {
   default     = "t3.micro"
 }
 
-variable "app_port" {
-  description = "Port on which the application serves HTTP traffic"
-  type        = number
-  default     = 3000
+variable "lb_instance_type" {
+  description = "EC2 instance type for the load balancer"
+  type        = string
+  default     = "t3.micro"
 }
 
 variable "backup_retention_days" {

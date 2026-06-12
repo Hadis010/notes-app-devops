@@ -45,19 +45,14 @@ variable "instance_count" {
   }
 }
 
-variable "app_port" {
-  description = "Port on which the application serves HTTP traffic"
+variable "front_port" {
+  description = "Port on which each application VM serves the front-end, reverse-proxied by the load balancer"
   type        = number
-  default     = 3000
+  default     = 80
 }
 
 variable "lb_security_group_id" {
   description = "Security group ID of the load balancer allowed to reach the application"
-  type        = string
-}
-
-variable "target_group_arn" {
-  description = "ARN of the load balancer target group the instances register to"
   type        = string
 }
 

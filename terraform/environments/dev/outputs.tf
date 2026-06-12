@@ -1,6 +1,11 @@
-output "alb_dns_name" {
-  description = "Public DNS name of the application load balancer"
-  value       = module.loadbalancer.alb_dns_name
+output "lb_public_ip" {
+  description = "Public IP address of the load balancer"
+  value       = module.loadbalancer.public_ip
+}
+
+output "lb_url" {
+  description = "HTTPS URL of the application (sslip.io domain resolving to the load balancer IP)"
+  value       = "https://${replace(module.loadbalancer.public_ip, ".", "-")}.sslip.io"
 }
 
 output "app_public_ips" {
