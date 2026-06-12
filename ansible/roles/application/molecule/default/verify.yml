@@ -15,11 +15,11 @@
 
     - name: Check the Docker Compose plugin
       ansible.builtin.command: docker compose version
-      register: docker_compose_version
+      register: application_docker_compose_version
       changed_when: false
 
     - name: Assert the Docker Compose plugin is available
       ansible.builtin.assert:
         that:
-          - docker_compose_version.rc == 0
+          - application_docker_compose_version.rc == 0
         fail_msg: "Docker Compose plugin not available"

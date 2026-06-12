@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Assert the Caddy service is running
+      ansible.builtin.assert:
+        that:
+          - "'caddy.service' in ansible_facts.services"
+          - "ansible_facts.services['caddy.service'].state == 'running'"
+        fail_msg: "Caddy service is not running"
+
+    - name: Query the load balancer on port 80
+      ansible.builtin.uri:
+        url: http://localhost/
+        status_code: [200, 502, 503]
+      register: loadbalancer_lb_response
+
+    - name: Assert the load balancer answered over HTTP
+      ansible.builtin.assert:
+        that:
+          - loadbalancer_lb_response.status in [200, 502, 503]
+        fail_msg: "Load balancer did not respond on port 80"

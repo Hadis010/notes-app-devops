@@ -17,11 +17,11 @@
 
     - name: Read the root crontab
       ansible.builtin.command: crontab -l -u root
-      register: root_crontab
+      register: backup_root_crontab
       changed_when: false
 
     - name: Assert the backup cron job is scheduled
       ansible.builtin.assert:
         that:
-          - "'backup-tiny-notes-db.sh' in root_crontab.stdout"
+          - "'backup-tiny-notes-db.sh' in backup_root_crontab.stdout"
         fail_msg: "Backup cron job not scheduled"
