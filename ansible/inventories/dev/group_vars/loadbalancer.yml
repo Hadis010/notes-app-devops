@@ -1,4 +1,9 @@
 ---
 # Load balancer group.
 
-lb_health_check_path: /health
+
+lb_domain: "LB_PUBLIC_IP_DASHED.sslip.io"
+
+lb_backends:
+  - APP_1_PRIVATE_IP_PLACEHOLDER
+  - APP_2_PRIVATE_IP_PLACEHOLDER

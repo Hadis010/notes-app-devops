@@ -1,9 +1,16 @@
 services:
   backend:
     build: ./backend
-    container_name: "{{ application_project_name }}-backend"
+    container_name: {{ application_project_name }}-backend
     restart: unless-stopped
     env_file:
       - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    container_name: {{ application_project_name }}-frontend
+    restart: unless-stopped
     ports:
-      - "{{ app_port }}:{{ app_port }}"
+      - "{{ application_front_port }}:80"
+    depends_on:
+      - backend

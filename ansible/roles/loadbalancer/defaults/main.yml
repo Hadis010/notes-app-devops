@@ -1,1 +1,3 @@
 ---
+loadbalancer_backend_port: 80
+loadbalancer_caddyfile_path: /etc/caddy/Caddyfile

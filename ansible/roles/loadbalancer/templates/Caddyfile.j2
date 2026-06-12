@@ -1,0 +1,3 @@
+{{ lb_domain }} {
+    reverse_proxy{% for backend in lb_backends %} {{ backend }}:{{ loadbalancer_backend_port }}{% endfor %}
+}
