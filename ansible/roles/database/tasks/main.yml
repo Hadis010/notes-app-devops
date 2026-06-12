@@ -25,14 +25,14 @@
   notify: Restart MySQL
 
 - name: Create the application database
-  community.mysql.mysql_db:
+  ansible.mysql.mysql_db:
     name: "{{ mysql_database }}"
     state: present
     login_unix_socket: "{{ database_mysql_socket }}"
   become: true
 
 - name: Create the application database user with privileges
-  community.mysql.mysql_user:
+  ansible.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
     host: "{{ database_mysql_user_host }}"

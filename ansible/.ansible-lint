@@ -1,0 +1,6 @@
+exclude_paths:
+  - .venv/
+  - roles/database/.venv/
+
+skip_list:
+  - fqcn[canonical]

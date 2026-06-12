@@ -14,7 +14,7 @@
         fail_msg: "MySQL service is not running"
 
     - name: Query the application database
-      community.mysql.mysql_query:
+      ansible.mysql.mysql_query:
         login_unix_socket: "{{ mysql_socket }}"
         query: "SHOW DATABASES LIKE '{{ mysql_database }}'"
       register: database_db_result
@@ -26,7 +26,7 @@
         fail_msg: "Database {{ mysql_database }} does not exist"
 
     - name: Query the application user
-      community.mysql.mysql_query:
+      ansible.mysql.mysql_query:
         login_unix_socket: "{{ mysql_socket }}"
         query: "SELECT User FROM mysql.user WHERE User = '{{ mysql_user }}'"
       register: database_user_result
@@ -38,7 +38,7 @@
         fail_msg: "User {{ mysql_user }} does not exist"
 
     - name: Query the Note table
-      community.mysql.mysql_query:
+      ansible.mysql.mysql_query:
         login_db: "{{ mysql_database }}"
         login_unix_socket: "{{ mysql_socket }}"
         query: "SHOW TABLES LIKE 'Note'"
