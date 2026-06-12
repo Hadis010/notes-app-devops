@@ -10,6 +10,35 @@ Tiny Notes App permet de créer, consulter et supprimer des notes via une interf
 - **Backend** : API REST Fastify
 - **MySQL** : persistance des données
 
+## Infrastructure & déploiement (DevOps)
+
+Ce dépôt provisionne une infrastructure AWS complète avec **Terraform** et la configure avec **Ansible**, le tout testé par **Molecule** :
+
+- **Terraform** : VPC, ≥ 2 VMs applicatives, load balancer, VM base de données privée, bucket S3 de backups, NAT instance, IAM (moindre privilège).
+- **Ansible** : rôles `common`, `application`, `database`, `backup` ; inventaire par groupes ; secrets via Ansible Vault.
+- **Molecule** : un scénario par rôle (`molecule test`).
+
+- **Déploiement de zéro, architecture, flux réseau/ports, stratégie de backup et tests : [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md).**
+
+Démarrage express :
+
+```sh
+# 1. Infrastructure
+cd terraform/environments/dev
+cp terraform.tfvars.example terraform.tfvars   # éditer ami_id / key_name / ssh_allowed_cidr
+terraform init && terraform apply
+
+# 2. Configuration + déploiement (après report des outputs Terraform dans l'inventaire)
+cd ansible
+ansible-galaxy collection install -r requirements.yml
+ansible-playbook -i inventories/dev/hosts.yml playbooks/site.yml --ask-vault-pass
+
+# 3. Tests Molecule
+cd ansible/roles/database && molecule test
+```
+
+> Le reste de ce README documente l'**application** (développement local, Docker Compose, API).
+
 ## Objectifs pédagogiques
 
 Ce projet a été réalisé dans le cadre du module DevOps.
