@@ -67,7 +67,7 @@ resource "aws_route_table_association" "public" {
 
 # Private route table
 resource "aws_route_table" "private" {
-  count = var.nat_network_interface_id != null ? 1 : 0
+  count = var.enable_nat_route ? 1 : 0
 
   vpc_id = aws_vpc.this.id
 
@@ -82,7 +82,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "private" {
-  count = var.nat_network_interface_id != null ? length(aws_subnet.private) : 0
+  count = var.enable_nat_route ? length(aws_subnet.private) : 0
 
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private[0].id

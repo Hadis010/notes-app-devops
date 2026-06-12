@@ -32,6 +32,7 @@ module "network" {
   private_subnet_cidrs     = var.private_subnet_cidrs
   availability_zones       = var.availability_zones
   nat_network_interface_id = module.app.nat_network_interface_id
+  enable_nat_route         = true
 }
 
 # Load balancer  

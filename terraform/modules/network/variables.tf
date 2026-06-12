@@ -44,7 +44,13 @@ variable "availability_zones" {
 }
 
 variable "nat_network_interface_id" {
-  description = "Optional primary network interface ID of a NAT instance used as the default route for the private subnets. When null, no private route table is created (the private subnets stay isolated)."
+  description = "Primary network interface ID of the NAT instance used as the default route for the private subnets. Only used when enable_nat_route is true."
   type        = string
   default     = null
+}
+
+variable "enable_nat_route" {
+  description = "When true, create a private route table sending the private subnets' egress through the NAT instance ENI. Kept as a static flag so the resource count is known at plan time."
+  type        = bool
+  default     = false
 }
