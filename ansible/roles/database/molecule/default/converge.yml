@@ -2,10 +2,9 @@
 - name: Converge
   hosts: all
   become: true
+  roles:
+    - role: database
   tasks:
-    - name: Apply the database role
-      ansible.builtin.include_role:
-        name: database
 
     - name: Create a test Note table
       community.mysql.mysql_query:

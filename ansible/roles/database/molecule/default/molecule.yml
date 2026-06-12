@@ -14,6 +14,9 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      roles_path: ../../..
   inventory:
     group_vars:
       all:
